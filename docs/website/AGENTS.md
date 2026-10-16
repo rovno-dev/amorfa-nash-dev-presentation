@@ -15,6 +15,7 @@ hooks/                 reusable hooks
 lib/utils.ts           cn()
 providers/             theme
 utils/                 fetch, cookies, constants
+e2e/                   Playwright specs
 ```
 
 ## Rules
@@ -34,6 +35,24 @@ utils/                 fetch, cookies, constants
 - Add a new icon library.
 - Break the `/api/*` rewrite in `next.config.ts`.
 
+## Testing
+
+Three commands, run all before declaring done:
+
+```bash
+npm run typecheck    # tsc --noEmit -p tsconfig.json
+npm run test         # vitest run
+npm run test:e2e     # playwright
+```
+
+- Every pure util in `utils/` needs a `.test.ts` beside it.
+- Every non-trivial component needs a vitest test with Testing Library.
+- User-visible flows (login, profile edit, admin nav) need a Playwright
+  spec in `e2e/`.
+- Mock `fetch` with `vi.fn()`. Never hit the real API in unit tests.
+- Playwright uses the dev server — start the stack first
+  (`docker compose -f docker-compose.dev.yml up -d`).
+
 ## When done
 
-Update `docs/website/spec.md`.
+Update `docs/website/spec.md` and add or extend tests.

@@ -14,6 +14,7 @@ app/
 config/       logging, rate_limiter
 database/     engine, session, cache client
 alembic/      migrations
+tests/        pytest suite
 ```
 
 ## Rules
@@ -30,8 +31,19 @@ alembic/      migrations
   `JSONResponse({"message": "..."})` (see `app/api/v1/auth.py`).
 - Do not log PII above `DEBUG`.
 
+## Testing
+
+- Every new endpoint or service function gets a test in
+  `backend/services/main-service/tests/`.
+- Follow the fixtures in `tests/conftest.py` — do not roll your own DB
+  or client setup.
+- Mock outbound side effects: monkeypatch `send_email`, use `fakeredis`
+  for `cache_client` (already wired in conftest).
+- Run: `pytest -q` from `backend/services/main-service`.
+
 ## When done
 
-Update BOTH:
-- `docs/backend/spec.md` — if any endpoint / env var / flow changed
-- `docs/backend/main-service.dbml` — if any table / column / enum changed
+Update all three:
+- `docs/backend/spec.md` — endpoints, env vars, flows
+- `docs/backend/main-service.dbml` — tables, columns, enums
+- `backend/services/main-service/tests/` — add or update tests

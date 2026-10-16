@@ -2,27 +2,30 @@
 
 Service: `tg-bot`. aiogram 3, long polling, single file `app/bot.py`.
 
-This is a **template bot** — hello world only. No DB, no state, no
-business logic. Add features only when the project actually needs them.
-
 ## Rules
 
 - Everything stays in `app/bot.py` until it grows past ~500 lines, then
   split into `handlers/`, `filters/`, `services/`.
-- Handlers registered via decorators (`@dp.message(...)`, `@dp.message(Command(...))`).
+- Handlers registered via decorators (`@dp.message(...)`).
 - No DB access. If you need data, call `main-service` over HTTP.
-- No global mutable state. If a flow needs steps, use FSM
-  (`aiogram.fsm.state.State`).
-- Escape user-controlled text before sending to Telegram. Use
-  `html.escape()` for HTML parse mode, or switch to MarkdownV2 and escape
-  accordingly.
+- No global mutable state. Use FSM (`aiogram.fsm.state.State`) for flows.
+- Escape user-controlled text before sending to Telegram.
+- Do not log chat ids, usernames, or message contents above `DEBUG`.
 
 ## Do not
 
 - Do not switch to webhook — long-poll only by default.
-- Do not log chat ids, usernames, or message contents above `DEBUG`.
 - Do not add a scheduler, queue, or background worker without a reason.
+- Do not add a DB driver.
+
+## Testing
+
+- Every command gets a test in `tg-bot/tests/`.
+- Use the `bot` and `dp` fixtures from `tests/conftest.py` — they wire
+  aiogram's test harness so `dispatch()` returns a mocked Bot.
+- Assert on `bot.send_message.await_args`, not on real Telegram.
+- Run: `pytest -q` from `tg-bot`.
 
 ## When done
 
-Update `docs/tg-bot/spec.md`.
+Update `docs/tg-bot/spec.md` and add or extend tests.
