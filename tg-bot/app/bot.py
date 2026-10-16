@@ -8,8 +8,6 @@ from aiogram.filters import Command
 from aiogram.client.default import DefaultBotProperties
 from aiogram.types import BotCommand
 
-# ─── Config ───────────────────────────────────────────────────────────
-
 logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] %(levelname)s: %(message)s",
@@ -22,7 +20,6 @@ TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher()
 
-# ─── Handlers ─────────────────────────────────────────────────────────
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message) -> None:
@@ -31,24 +28,17 @@ async def cmd_start(message: types.Message) -> None:
 
 @dp.message(Command("help"))
 async def cmd_help(message: types.Message) -> None:
-    await message.answer(
-        "<b>Commands</b>\n"
-        "/start — greet\n"
-        "/help — this message"
-    )
+    await message.answer("<b>Commands</b>\n/start — greet\n/help — this message")
 
-# ─── Entry point ──────────────────────────────────────────────────────
 
 async def main() -> None:
     if not TOKEN:
         log.error("TELEGRAM_BOT_TOKEN is not set")
         sys.exit(1)
-
     await bot.set_my_commands([
         BotCommand(command="start", description="Greet"),
-        BotCommand(command="help",  description="Show commands"),
+        BotCommand(command="help", description="Show commands"),
     ])
-
     log.info("Bot started")
     await dp.start_polling(bot)
 

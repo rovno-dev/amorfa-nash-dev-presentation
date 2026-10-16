@@ -6,44 +6,45 @@ Service: `backend/services/main-service`. FastAPI + SQLAlchemy 2 + Alembic.
 
 ```
 app/
-  api/v1/     routers — one file per resource
-  models/     SQLAlchemy models
-  schemas/    Pydantic v2 request/response
-  services/   business logic (email, otp, users)
-  shared/     cross-cutting (auth, guards)
-config/       logging, rate_limiter
-database/     engine, session, cache client
-alembic/      migrations
-tests/        pytest suite
+  api/v1/    routers — one file per resource
+  models/    SQLAlchemy models
+  schemas/   Pydantic v2 request/response
+  services/  business logic (create this folder when a router grows)
+config/      logging
+database/    engine, session
+alembic/     migrations
+tests/       pytest suite
 ```
 
 ## Rules
 
-- New resource = `models/<x>.py` + `schemas/<x>/` + `api/v1/<x>.py`.
-  Register the router ONLY in `app/api/router.py`.
-- Never edit an applied Alembic migration. New one:
+- New resource = `models/<x>.py` + `schemas/<x>.py` + `api/v1/<x>.py`.
+  Register the router ONLY in `app/api/router.py`. Mirror the shape of
+  the `notes` resource — that is the canonical example.
+- Never edit an applied Alembic migration. Add a new one:
   `alembic revision --autogenerate -m "..."`.
-- Protect endpoints with `Depends(get_current_user)`.
-  Admin-only with `Depends(get_admin_user)` from `app/api/v1/admin.py`.
-- Rate limit anything that sends mail/SMS: `Depends(limit_otp_send)`.
-- Business logic goes in `app/services/`, not in routers.
-- Error responses: `HTTPException` for 4xx; auth-style errors use
-  `JSONResponse({"message": "..."})` (see `app/api/v1/auth.py`).
-- Do not log PII above `DEBUG`.
+- Router bodies contain DB calls only. When a router grows past ~100
+  lines or mixes concerns, extract business logic to
+  `app/services/<x>.py` — the same way `notes` stays in one file.
+- Errors: `HTTPException` for 4xx. `{"detail": "..."}` for all.
+- Never log PII. Never write to another service's tables.
+- Adding auth, uploads, queues, or anything else is expected. Put each in
+  its own folder (`app/auth/`, `app/files/`, `app/tasks/`) so the base
+  stays readable. Update the spec when you do.
 
 ## Testing
 
-- Every new endpoint or service function gets a test in
-  `backend/services/main-service/tests/`.
-- Follow the fixtures in `tests/conftest.py` — do not roll your own DB
-  or client setup.
-- Mock outbound side effects: monkeypatch `send_email`, use `fakeredis`
-  for `cache_client` (already wired in conftest).
-- Run: `pytest -q` from `backend/services/main-service`.
+- Every endpoint gets a test in `tests/`.
+- Use the fixtures in `tests/conftest.py` — a real Postgres via
+  testcontainers, migrations applied, session-scoped.
+- Mock outbound side effects (mail, HTTP, third-party SDKs).
+- Run: `pytest -q`.
 
 ## When done
 
 Update all three:
-- `docs/backend/spec.md` — endpoints, env vars, flows
-- `docs/backend/main-service.dbml` — tables, columns, enums
-- `backend/services/main-service/tests/` — add or update tests
+- `docs/backend/spec.md` — interfaces
+- `docs/backend/main-service.dbml` — schema
+- `tests/` — coverage
+
+If a new public interface was added, bump `docs/VERSION`.

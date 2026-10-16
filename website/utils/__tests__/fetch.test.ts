@@ -1,60 +1,51 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { $fetch } from "../fetch";
 
-vi.mock("../safe-cookie-storage", () => ({
-  safeCookieStorage: {
-    getItem: vi.fn(() => "test-token"),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-  },
-}));
-
 describe("$fetch", () => {
-  const originalFetch = globalThis.fetch;
-
+  const original = globalThis.fetch;
   beforeEach(() => {
     globalThis.fetch = vi.fn();
   });
-
   afterEach(() => {
-    globalThis.fetch = originalFetch;
+    globalThis.fetch = original;
     vi.clearAllMocks();
   });
 
-  it("adds Authorization header when token present", async () => {
+  it("returns response and json", async () => {
     (globalThis.fetch as any).mockResolvedValueOnce({
       ok: true,
       status: 200,
       json: async () => ({ hello: "world" }),
     });
-
-    const result = await $fetch("/api/v1/me", { isToast: false });
-
-    const call = (globalThis.fetch as any).mock.calls[0];
-    expect(call[1].headers.Authorization).toBe("Bearer test-token");
-    expect(result.json).toEqual({ hello: "world" });
+    const r = await $fetch("/api/v1/notes", { isToast: false });
+    expect(r.response?.status).toBe(200);
+    expect(r.json).toEqual({ hello: "world" });
   });
 
-  it("returns response and json on error", async () => {
-    (globalThis.fetch as any).mockResolvedValueOnce({
-      ok: false,
-      status: 400,
-      json: async () => ({ message: "bad" }),
-    });
-
-    const result = await $fetch("/api/v1/me", { isToast: false });
-    expect(result.response.status).toBe(400);
-    expect(result.json).toEqual({ message: "bad" });
-  });
-
-  it("does not crash on non-JSON body", async () => {
+  it("survives non-json bodies", async () => {
     (globalThis.fetch as any).mockResolvedValueOnce({
       ok: true,
       status: 204,
       json: async () => { throw new Error("no body"); },
     });
+    const r = await $fetch("/api/v1/notes", { isToast: false });
+    expect(r.json).toBeUndefined();
+  });
 
-    const result = await $fetch("/api/v1/x", { isToast: false });
-    expect(result.json).toBeUndefined();
+  it("passes method and body through", async () => {
+    (globalThis.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      status: 201,
+      json: async () => ({}),
+    });
+    await $fetch("/api/v1/notes", {
+      method: "POST",
+      body: JSON.stringify({ title: "x" }),
+      headers: { "Content-Type": "application/json" },
+      isToast: false,
+    });
+    const call = (globalThis.fetch as any).mock.calls[0];
+    expect(call[1].method).toBe("POST");
+    expect(call[1].headers["Content-Type"]).toBe("application/json");
   });
 });

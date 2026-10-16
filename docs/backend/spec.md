@@ -1,71 +1,80 @@
 # main-service — Spec
 
-Source of truth for user identity and content.
+Source of truth for the notes resource. This is the base the template
+ships — add more resources following the same pattern when a feature
+needs them.
 
 ## DB schema
 
-See [`main-service.dbml`](./main-service.dbml). It is authoritative — if
-the spec and the .dbml disagree, the .dbml wins until both are fixed.
+See [`main-service.dbml`](./main-service.dbml). Authoritative — if this
+spec and the .dbml disagree, the .dbml wins until both are fixed.
 
 ## Endpoints
 
-### Auth (`/api/v1`)
+Base: `/api/v1`. All JSON.
 
-| Method | Path                   | Auth | Purpose                          |
-|--------|------------------------|------|----------------------------------|
-| POST   | `/register/email`      | —    | Start signup, send OTP           |
-| POST   | `/verify-email`        | —    | Confirm OTP, return JWT pair     |
-| POST   | `/resend-verification` | —    | Resend OTP                       |
-| POST   | `/login/email`         | —    | Email + password login           |
-| POST   | `/refresh`             | —    | Refresh token → new access token |
-| POST   | `/logout`              | user | Invalidate refresh token         |
-| GET    | `/me`                  | user | Current user profile             |
+| Method | Path             | Body              | Returns           |
+|--------|------------------|-------------------|-------------------|
+| GET    | `/notes`         | —                 | `NoteResponse[]`  |
+| POST   | `/notes`         | `NoteCreate`      | `NoteResponse` 201 |
+| GET    | `/notes/{id}`    | —                 | `NoteResponse`    |
+| PATCH  | `/notes/{id}`    | `NoteUpdate`      | `NoteResponse`    |
+| DELETE | `/notes/{id}`    | —                 | 204               |
 
-### Me (`/api/v1/me`)
+Plus `GET /health` → `{"status": "healthy", "service": "main-service"}`.
 
-| Method | Path               | Auth | Purpose         |
-|--------|--------------------|------|-----------------|
-| PATCH  | ``                 | user | Update profile  |
-| POST   | `/change-password` | user | Change password |
+### Models
 
-### Admin (`/api/v1/admin`)
+```python
+class NoteCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=200)
+    body:  str = Field(default="", max_length=10_000)
 
-All routes require `get_admin_user` (role `admin` or `root`).
+class NoteUpdate(BaseModel):
+    title: str | None = None
+    body:  str | None = None
 
-## Error format
-
-- `4xx` from validation → FastAPI default `{"detail": [...]}`.
-- All other errors → `{"message": "..."}`.
-
-## Rate limits
-
-- Global: 200 req/min per IP (`config/rate_limiter.py`).
-- OTP cooldown: 5s per IP.
-
-## Auth flow
-
-```mermaid
-sequenceDiagram
-  participant C as Client
-  participant A as API
-  participant M as Mail
-  participant R as Valkey
-
-  C->>A: POST /register/email {email, password}
-  A->>R: SETEX otp:{email} 300 code
-  A->>M: send(code)
-  A-->>C: {sent: true}
-
-  C->>A: POST /verify-email {email, code}
-  A->>R: GET otp:{email}
-  A->>R: DEL otp:{email}
-  A-->>C: {access_token, refresh_token}
-
-  C->>A: GET /me (Bearer access)
-  A-->>C: {id, email, name, role}
+class NoteResponse(BaseModel):
+    id: UUID
+    title: str
+    body: str
+    created_at: datetime
+    updated_at: datetime
 ```
+
+### Errors
+
+- `404 {"detail": "Note not found"}` — id does not exist.
+- `422 {"detail": [...]}` — validation, FastAPI default.
 
 ## Env vars
 
-Required: `MAIN_DB_*`, `CACHE_*`, `JWT_SECRET_KEY`, `MAIL_*`,
-`ALLOWED_ORIGINS`. See `.env.example` at repo root.
+| Var               | Required | Purpose                                |
+|-------------------|----------|----------------------------------------|
+| `MAIN_DB_USER`    | yes      | Postgres user                          |
+| `MAIN_DB_PASSWORD`| yes      | Postgres password                      |
+| `MAIN_DB_HOST`    | yes      | Postgres host                          |
+| `MAIN_DB_PORT`    | yes      | Postgres port                          |
+| `MAIN_DB_NAME`    | yes      | Postgres database                      |
+| `ALLOWED_ORIGINS` | no       | Comma-separated CORS origins           |
+
+## Extending
+
+When a feature needs a new resource:
+
+1. Add a table to `main-service.dbml`.
+2. `alembic revision --autogenerate -m "<resource>"`.
+3. Add `models/<x>.py`, `schemas/<x>.py`, `api/v1/<x>.py` — copy the
+   shape of `notes`.
+4. Register the router in `app/api/router.py`.
+5. Add tests in `tests/test_<x>.py`.
+6. Add a section to this spec.
+
+When a feature needs auth, files, or a queue: create a new folder
+(`app/auth/`, `app/files/`, `app/tasks/`), give it its own spec section,
+and keep `notes` as the simple reference.
+
+## Tests
+
+`pytest -q`. Real Postgres via testcontainers, migrations applied at
+session start. One test per endpoint behaviour.

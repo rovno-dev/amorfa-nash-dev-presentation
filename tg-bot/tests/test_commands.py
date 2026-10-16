@@ -1,4 +1,3 @@
-"""Handler-level tests: call the coroutine directly, assert on the reply."""
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -18,8 +17,7 @@ async def test_start_greets():
     m = _message()
     await cmd_start(m)
     m.answer.assert_awaited_once()
-    text = m.answer.await_args.args[0]
-    assert "Hello" in text
+    assert "Hello" in m.answer.await_args.args[0]
 
 
 @pytest.mark.asyncio

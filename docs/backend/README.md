@@ -1,6 +1,6 @@
 # main-service
 
-FastAPI service for auth, users, and content.
+FastAPI service. One resource: `notes`. No auth.
 
 ## Run
 
@@ -12,6 +12,6 @@ Swagger: http://localhost:8000/docs. Health: `/health`.
 
 ## See also
 
-- `spec.md` — endpoints, auth flow, env vars
-- `main-service.dbml` — DB schema (open in dbdiagram.io)
-- `AGENTS.md` — conventions for AI changes
+- `spec.md` — endpoints, env vars
+- `main-service.dbml` — DB schema (dbdiagram.io)
+- `AGENTS.md` — conventions

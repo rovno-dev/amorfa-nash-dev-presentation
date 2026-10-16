@@ -1,58 +1,140 @@
 "use client";
-import Link from "next/link";
-import Logo from "@/components/layout/logo/logo";
+
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
-import { CopyButton } from "@/components/ui/copy-button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Container } from "@/components/ui/container";
+import { $fetch } from "@/utils/fetch";
+
+interface Note {
+  id: string;
+  title: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export default function Home() {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
+  async function load() {
+    setLoading(true);
+    const { response, json } = await $fetch("/api/v1/notes", { isToast: false });
+    if (!response?.ok) {
+      toast.error("Failed to load notes");
+      setLoading(false);
+      return;
+    }
+    setNotes(json ?? []);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!title.trim()) return;
+    setSubmitting(true);
+    const { response, json } = await $fetch("/api/v1/notes", {
+      method: "POST",
+      body: JSON.stringify({ title, body }),
+      headers: { "Content-Type": "application/json" },
+      isToast: false,
+    });
+    setSubmitting(false);
+    if (!response?.ok) {
+      toast.error("Failed to create note");
+      return;
+    }
+    toast.success("Note created");
+    setTitle("");
+    setBody("");
+    setNotes((prev) => [json, ...prev]);
+  }
+
+  async function handleDelete(id: string) {
+    const { response } = await $fetch(`/api/v1/notes/${id}`, {
+      method: "DELETE",
+      isToast: false,
+    });
+    if (!response?.ok) {
+      toast.error("Failed to delete");
+      return;
+    }
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+  }
+
   return (
-    <div className="flex sm:h-screen flex-col items-center justify-center bg-bg text-white px-6 overflow-hidden">
-      <h1 className="text-display-2 text-center mb-10">
-        To get started, edit the{" "}
-        <code className="rounded bg-white/10 px-2 py-1 font-mono">page.tsx</code>{" "}
-        file.
-      </h1>
-      <div className="mb-4 text-left bg-card border border-outline rounded-lg p-4 max-w-md relative">
-        <p className="text-(--on-bg-medium) text-body-4 mb-2">Quick start:</p>
-        <pre className="text-(--green-4) font-mono text-sm whitespace-pre-wrap">docker compose --profile prod up -d --build</pre>
-        <CopyButton
-          text="docker compose --profile prod up -d --build"
-          className="absolute top-2 right-2"
-        />
+    <Container className="py-12 md:py-16">
+      <h1 className="text-display-2 mb-8">Notes</h1>
+
+      <Card className="mb-10">
+        <CardHeader>
+          <CardTitle>New note</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <Input
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={200}
+            />
+            <Textarea
+              placeholder="Body"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              maxLength={10000}
+              rows={4}
+            />
+            <Button type="submit" disabled={submitting || !title.trim()}>
+              {submitting ? "Saving…" : "Create"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      {loading && <p className="text-(--on-bg-medium)">Loading…</p>}
+      {!loading && notes.length === 0 && (
+        <p className="text-(--on-bg-medium)">No notes yet.</p>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {notes.map((note) => (
+          <Card key={note.id} className="flex flex-col">
+            <CardHeader>
+              <CardTitle className="line-clamp-1">{note.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3 flex-1">
+              <p className="text-sm text-(--on-bg-medium) line-clamp-4 whitespace-pre-wrap">
+                {note.body || "—"}
+              </p>
+              <div className="mt-auto flex justify-between items-center">
+                <time className="text-xs text-(--on-bg-low)">
+                  {new Date(note.created_at).toLocaleDateString()}
+                </time>
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={() => handleDelete(note.id)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-      <div className="mb-8 text-center text-(--on-bg-medium) text-body-4 max-w-md">
-        <p className="mt-3">
-          Check the <code className="rounded bg-white/10 px-2 py-1 font-mono">@/app/admin/</code>, <code className="rounded bg-white/10 px-2 py-1 font-mono">@/app/admin/</code>{" "}
-          to see simple admin and user dashboard pages implementation (it has credentials check, so setup backend first)
-        </p>
-        <p className="mt-3">
-          and <code className="rounded bg-white/10 px-2 py-1 font-mono">@/app/login/</code>{" "}
-          to see simple form with client validation implementation
-        </p>
-      </div>
-      <div className="flex items-center gap-3">
-        <Button
-          variant="filled"
-          size="large"
-          asChild
-          className="w-full sm:w-[200px]"
-        >
-          <a href="https://github.com/unidoka/amorfa" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </Button>
-      </div>
-      <div className="mt-14 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-        <p className="text-(--on-bg-low)">You can use <span className="text-(--on-bg-medium)">repomix</span> and <span className="text-(--on-bg-medium)"><Link className="underline" href={"https://github.com/niyazgim/uniskilla"}>lazy-accurate skill</Link></span> to have agentic-like experience on any chat AI</p>
-        <p className="text-(--on-bg-low) hidden sm:inline-block">|</p>
-        <a
-          href="https://unidoka.com/amorfa"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Made on Amorfa"
-          className="mt-3 sm:m-0"
-        >
-          <img src="/made-on-amorfa-badge-v0.svg" alt="made-on-amorfa-badge-v0" />
-        </a>
-      </div>
-    </div>
+    </Container>
   );
 }

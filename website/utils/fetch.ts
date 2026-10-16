@@ -1,49 +1,42 @@
-import { toast } from "sonner"
-import { safeCookieStorage } from "@/utils/safe-cookie-storage"
+import { toast } from "sonner";
 
 export interface FetchResult {
-  response?: any
-  json?: any
+  response?: Response;
+  json?: any;
 }
 
 interface FetchOptions {
-  method?: string
-  body?: BodyInit | null
-  isToast?: boolean
-  headers?: Record<string, string>
-  onLoadingChange?: (loading: boolean) => void
+  method?: string;
+  body?: BodyInit | null;
+  isToast?: boolean;
+  headers?: Record<string, string>;
 }
 
 export async function $fetch(
   route: string,
-  { method = "GET", body = null, isToast = true, headers = {}, onLoadingChange }: FetchOptions = {}
+  { method = "GET", body = null, isToast = true, headers = {} }: FetchOptions = {},
 ): Promise<FetchResult> {
-  headers.Accept = "application/json"
-  const token = safeCookieStorage.getItem("access_token")
-  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
-  const url = API_URL + route
-
-  if (token) {
-    headers.Authorization = "Bearer " + token
-  }
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+  const url = `${apiBase}${route}`;
 
   const response = await fetch(url, {
     method,
     body,
-    headers
-  })
+    headers: { Accept: "application/json", ...headers },
+  });
 
-  let json
+  let json: any;
   try {
-    json = await response.json()
-  } catch { }
-
-  const message = json?.message
-  if (message && isToast) {
-    if (!response?.ok) toast.error(message)
-    else toast.success(message)
+    json = await response.json();
+  } catch {
+    json = undefined;
   }
 
-  await onLoadingChange?.(false)
-  return { response, json }
+  const message = json?.detail ?? json?.message;
+  if (message && isToast) {
+    if (response.ok) toast.success(message);
+    else toast.error(message);
+  }
+
+  return { response, json };
 }

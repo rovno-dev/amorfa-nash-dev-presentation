@@ -1,7 +1,7 @@
 # Global Agent Rules
 
-Read this first. Then read `docs/<service>/AGENTS.md` for the service you
-are touching.
+Read `docs/SPEC.md` first — it defines the contract. Then read the
+`AGENTS.md` for the service you are touching.
 
 ## Repository shape
 
@@ -9,22 +9,42 @@ are touching.
 backend/services/main-service/   FastAPI app
 website/                         Next.js app
 tg-bot/                          aiogram Telegram bot
-docs/                            this folder
+docs/                            the spec — source of truth
 ```
+
+## Dev vs prod
+
+```
+Dev:    docker-compose.dev.yml   → backend + bot (hot reload)
+        website runs on host:    cd website && npm run dev
+
+Prod:   docker-compose.yml       → everything, behind Traefik
+```
+
+**The website is not in `docker-compose.dev.yml`.** Do not add it. Its
+`Dockerfile` targets prod only. See `docs/DEV.md`.
 
 ## Rules
 
 - Smallest diff that solves the problem. Deletion beats addition.
 - No comments except WHY. English only.
-- No new dependencies without a strong reason.
-- Do not invent new top-level folders. Use what exists.
-- When you change a public interface (endpoint, route, command, entity,
-  env var, event, table), update `docs/<service>/spec.md` **and** the
-  matching `docs/<service>/<service>.dbml` in the same change.
+- No new dependencies without a strong reason. Prefer the stdlib and
+  what's already in `requirements.txt` / `package.json`.
+- When you change a public interface, update its `spec.md` in the same
+  change. If a table changes, update the `.dbml` too. If a public
+  interface changes, bump `docs/VERSION`.
+- Extending is expected. The base is thin on purpose. Add auth, uploads,
+  queues, whatever a feature needs — just keep each concern in its own
+  module and update the spec.
+
+## Adding a feature
+
+1. Spec it in `docs/<service>/spec.md`.
+2. Add the code, mirroring the shape of the `notes` resource.
+3. Add tests.
+4. Bump `docs/VERSION` if any public interface changed.
 
 ## Testing is part of done
-
-A change without a test is incomplete. Before declaring a task finished:
 
 ```bash
 (cd backend/services/main-service && pytest -q)
@@ -32,15 +52,13 @@ A change without a test is incomplete. Before declaring a task finished:
 (cd tg-bot && pytest -q)
 ```
 
-Read `docs/TESTING.md` for the full contract. Bug fixes start with a
-failing test. New endpoints, hooks, and bot commands ship with at least
-one test each. Never hit the network, mail, or Telegram in a test — mock
-them.
+See `docs/TESTING.md`.
 
 ## Where to look
 
 | Task                       | Read first                        |
 |----------------------------|-----------------------------------|
+| Dev workflow               | `docs/DEV.md`                     |
 | Backend endpoint / model   | `docs/backend/spec.md`            |
 | DB schema                  | `docs/backend/main-service.dbml`  |
 | Frontend route / component | `docs/website/spec.md`            |
