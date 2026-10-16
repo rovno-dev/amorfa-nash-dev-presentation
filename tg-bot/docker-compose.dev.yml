@@ -1,0 +1,21 @@
+services:
+  tg-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: tg-bot-dev
+    env_file:
+      - ../.env
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    networks:
+      - main-network-dev
+    restart: unless-stopped
+
+networks:
+  main-network-dev:
+    name: main-network-dev
+    external: false
+  default:

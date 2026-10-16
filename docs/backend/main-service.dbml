@@ -1,0 +1,93 @@
+Project main_db {
+  database_type: 'PostgreSQL'
+  Note: 'Main service database'
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────
+
+Enum user_role {
+  client  // can only receive notifications
+  user    // normal account
+  admin   // user CRUD except admins + content
+  root    // full access
+}
+
+Enum user_status {
+  pending_verification
+  verificated
+  blocked
+}
+
+Enum productstatus {
+  ACTIVE
+  INACTIVE
+  DRAFT
+}
+
+// ─── Tables ───────────────────────────────────────────────────────────
+
+Table users {
+  id                uuid          [pk]
+  username          varchar       [unique]
+  name              varchar
+  surname           varchar
+  email             varchar       [unique, not null]
+  phone             varchar       [unique]
+  password          varchar       [not null]
+  description       text
+  avatar_url        varchar
+  vk_public_username varchar      [unique]
+  user_role         user_role     [default: 'user']
+  user_status       user_status   [default: 'pending_verification']
+  verified          boolean       [default: false]
+  blocked           boolean       [default: false]
+  created_at        timestamp     [default: `now()`]
+  updated_at        timestamp     [default: `now()`]
+
+  indexes {
+    email  [unique, name: 'ix_users_email']
+    phone  [unique, name: 'ix_users_phone']
+  }
+}
+
+Table categories {
+  id          uuid      [pk]
+  name        varchar   [not null]
+  slug        varchar   [unique, not null]
+  description varchar
+  parent_id   uuid      [ref: > categories.id]
+  created_at  timestamp [default: `now()`]
+  updated_at  timestamp [default: `now()`]
+
+  indexes {
+    name  [name: 'ix_categories_name']
+    slug  [unique, name: 'ix_categories_slug']
+  }
+}
+
+Table products {
+  id          uuid          [pk]
+  name        varchar       [not null]
+  description varchar
+  price       decimal       [not null]
+  status      productstatus [default: 'DRAFT']
+  category_id uuid          [ref: > categories.id]
+  created_by  uuid          [ref: > users.id, not null]
+  created_at  timestamp     [default: `now()`]
+  updated_at  timestamp     [default: `now()`]
+
+  indexes {
+    name   [name: 'ix_products_name']
+    price  [name: 'ix_products_price']
+  }
+}
+
+Table product_images {
+  id         uuid      [pk]
+  product_id uuid      [ref: > products.id, not null]
+  image_url  varchar   [not null]
+  is_cover   boolean   [default: false]
+  order      integer   [default: 0]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
