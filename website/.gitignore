@@ -42,3 +42,7 @@ next-env.d.ts
 .aider*
 
 repomix*
+# tests
+/coverage
+/playwright-report
+/test-results
