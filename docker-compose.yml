@@ -1,32 +1,25 @@
-name: e-shop-template
-
-include:
-  - backend/docker-compose.yml
-
 services:
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      # Uncomment for HTTPS
-      # - "--entrypoints.websecure.address=443"
-      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      # - "--certificatesresolvers.myresolver.acme.email=your-email@example.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      - "--api.insecure=${TRAEFIK_API_INSECURE:-false}"
-    ports:
-      - "80:80"
-      # - "443:443"   # Uncomment for HTTPS
-      # - "8080:8080" # For dashboard
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      # - "./letsencrypt:/letsencrypt" # for certs storing
+  next-js:
+    container_name: next-js
+    env_file:
+      - ./.env
+    build:
+      context: .
+      target: prod
+    profiles:
+      - prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      - "traefik.http.routers.frontend.rule=${DOMAIN}"
+      - "traefik.http.routers.frontend.entrypoints=${ENTRYPOINT}"
+      - "traefik.http.routers.frontend.tls=${TLS_ENABLED}"
+      - "traefik.http.routers.frontend.tls.certresolver=${CERT_RESOLVER}"
     networks:
       - main-network
 
 networks:
   main-network:
-    driver: bridge
+    name: main-network
+    external: false
+  default:
