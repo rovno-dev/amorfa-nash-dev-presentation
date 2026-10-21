@@ -1,18 +1,16 @@
 "use client";
-
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ScrambleText } from "./components/scramble-text";
 import { SlideShell } from "./components/slide-shell";
 import { SPEAKERS, type DeckId } from "./data";
-
 interface DeckProps {
+  total: number;
   index: number;
   onPrev: () => void;
   onNext: () => void;
 }
-
 function SpeakerHero({
   id,
   active,
@@ -23,7 +21,6 @@ function SpeakerHero({
 }: DeckProps & { id: DeckId; active: boolean }) {
   const s = SPEAKERS[id];
   const isDuo = s.photos.length === 2;
-
   return (
     <SlideShell
       active={active}
@@ -97,7 +94,6 @@ function SpeakerHero({
     </SlideShell>
   );
 }
-
 function TerminalCard({
   title,
   body,
@@ -123,16 +119,15 @@ function TerminalCard({
       style={{ borderColor: border, animationDelay: `${delay}ms` }}
     >
       <h3
-        className="font-mono text-[17px] font-medium"
+        className="font-mono text-[20px] font-medium"
         style={{ color: danger ? "#FF3B3B" : "#CCFF00" }}
       >
         {title}
       </h3>
-      <p className="text-[17px] leading-relaxed text-[#ccc]">{body}</p>
+      <p className="text-[20px] leading-relaxed text-[#ccc]">{body}</p>
     </Card>
   );
 }
-
 function Stat({
   num,
   label,
@@ -154,7 +149,6 @@ function Stat({
     </div>
   );
 }
-
 function Prompt({ cmd, delay = 100 }: { cmd: string; delay?: number }) {
   return (
     <div
@@ -165,10 +159,9 @@ function Prompt({ cmd, delay = 100 }: { cmd: string; delay?: number }) {
     </div>
   );
 }
-
 /* ══════════════════════════════════════════════════════════════════
-   AMIR — 4 slides
-   ══════════════════════════════════════════════════════════════════ */
+AMIR — 4 slides
+══════════════════════════════════════════════════════════════════ */
 export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.amir.slideCount;
   return (
@@ -181,7 +174,6 @@ export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
       />
-
       <SlideShell
         active={index === 1}
         index={1}
@@ -190,16 +182,16 @@ export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <pre className="anim pointer-events-none absolute right-[4%] top-1/2 -translate-y-1/2 select-none whitespace-pre font-mono text-[15px] font-medium leading-[1.1] text-[#CCFF00] opacity-10 [animation-delay:100ms]">
-{`    _    __  __ ___ ____
+          {`    _    __  __ ___ ____
    / \\  |  \\/  |_ _|  _ \\
   / _ \\ | |\\/| || || |_) |
  / ___ \\| |  | || ||  _ <
 /_/   \\_\\_|  |_|___|_| \\_\\
-  __  __ _____ _   _
- |  \\/  | ____| | | |
- | |\\/| |  _| | | | |
- | |  | | |___| |_| |
- |_|  |_|_____|\\___/`}
+__  __ _____ _   _ 
+|  \\/  | ____| | | |
+| |\\/| |  _| | | | |
+| |  | | |___| |_| |
+|_|  |_|_____|\\___/`}
         </pre>
         <div className="relative max-w-[68%]">
           <Prompt cmd="./history --amir" />
@@ -217,7 +209,6 @@ export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
           </div>
         </div>
       </SlideShell>
-
       <SlideShell
         active={index === 2}
         index={2}
@@ -257,7 +248,6 @@ export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
           />
         </div>
       </SlideShell>
-
       <SlideShell
         active={index === 3}
         index={3}
@@ -266,8 +256,8 @@ export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <pre className="anim pointer-events-none absolute bottom-[6%] left-[4%] select-none whitespace-pre font-mono text-[15px] font-medium leading-[1.1] text-[#CCFF00] opacity-10 [animation-delay:100ms]">
-{`   ____                 _
-  / ___| __ _ _ __   __| | __ _
+          {`   ____                 _   
+  / ___| __ _ _ __   __| | __ _ 
  | |  _ / _\` | '_ \\ / _\` |/ _\` |
  | |_| | (_| | | | | (_| | (_| |
   \\____|\\__,_|_| |_|\\__,_|\\__,_|`}
@@ -292,10 +282,9 @@ export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
     </>
   );
 }
-
 /* ══════════════════════════════════════════════════════════════════
-   NIYAZ — 3 slides
-   ══════════════════════════════════════════════════════════════════ */
+NIYAZ — 4 slides
+══════════════════════════════════════════════════════════════════ */
 export function NiyazDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.niyaz.slideCount;
   return (
@@ -308,7 +297,6 @@ export function NiyazDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
       />
-
       <SlideShell
         active={index === 1}
         index={1}
@@ -355,7 +343,6 @@ export function NiyazDeck({ index, onPrev, onNext }: DeckProps) {
           </div>
         </div>
       </SlideShell>
-
       <SlideShell
         active={index === 2}
         index={2}
@@ -376,13 +363,51 @@ export function NiyazDeck({ index, onPrev, onNext }: DeckProps) {
           <Stat num="1" label="место для всех" />
         </div>
       </SlideShell>
+      <SlideShell
+        active={index === 3}
+        index={3}
+        total={total}
+        onPrev={onPrev}
+        onNext={onNext}
+      >
+        <Prompt cmd="./live-demo" />
+        <h2 className="anim mt-3 text-[54px] font-medium leading-[1.15] tracking-[-.02em] [animation-delay:150ms]">
+          unidoka.com/events — вживую
+        </h2>
+        <div className="anim mt-8 flex items-start gap-12 [animation-delay:200ms]">
+          <div className="relative h-[420px] w-[420px] shrink-0 border border-[#222] bg-white p-2">
+            <img
+              src="/speakers/2/events-qr.svg"
+              alt="QR: unidoka.com/events"
+              className="h-full w-full object-contain"
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 border border-[#222] bg-[#0a0a0a] px-3 py-2 font-mono text-xs text-[#888]">
+              <span className="inline-block size-2 rounded-full bg-[#CCFF00]" />
+              unidoka.com/events
+            </div>
+            <div className="h-[380px] w-full overflow-hidden border border-t-0 border-[#222]">
+              <iframe
+                src="https://unidoka.com/events"
+                title="Unidoka Events"
+                className="h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <p className="mt-4 font-mono text-sm text-[#666]">
+							// отсканируй QR или открой на своём устройстве прямо сейчас
+            </p>
+          </div>
+        </div>
+      </SlideShell>
     </>
   );
 }
-
 /* ══════════════════════════════════════════════════════════════════
-   ANASTASIA — 8 slides
-   ══════════════════════════════════════════════════════════════════ */
+ANASTASIA — 8 slides
+══════════════════════════════════════════════════════════════════ */
 function ErrorSlide({
   active,
   idx,
@@ -428,7 +453,6 @@ function ErrorSlide({
     </SlideShell>
   );
 }
-
 export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.anastasia.slideCount;
   return (
@@ -441,7 +465,6 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
       />
-
       <SlideShell
         active={index === 1}
         index={1}
@@ -462,7 +485,6 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
           столкнулись с неопределённостью.
         </p>
       </SlideShell>
-
       <ErrorSlide
         active={index === 2}
         idx={2}
@@ -531,7 +553,6 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
         bad="12 тарифов. 6 кнопок. Меню из 8 пунктов."
         good="3 понятных тарифа. Один выделен как «самый популярный». Подсказки: «выбрали 80% клиентов»."
       />
-
       <SlideShell
         active={index === 7}
         index={7}
@@ -540,11 +561,11 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <pre className="anim pointer-events-none absolute right-[4%] top-1/2 -translate-y-1/2 select-none whitespace-pre font-mono text-[15px] font-medium leading-[1.1] text-[#CCFF00] opacity-10 [animation-delay:100ms]">
-{`    _---_
-   /     \\
-  | () () |
-   \\  ^  /
-    |||||
+          {`    _---_    
+   /     \\    
+  | () () |    
+   \\  ^  /     
+    |||||      
     |||||`}
         </pre>
         <div className="relative max-w-[68%]">
@@ -565,10 +586,9 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
     </>
   );
 }
-
 /* ══════════════════════════════════════════════════════════════════
-   MIKHAIL & DANIL — 5 slides
-   ══════════════════════════════════════════════════════════════════ */
+MIKHAIL & DANIL — 5 slides
+══════════════════════════════════════════════════════════════════ */
 export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.mikhail.slideCount;
   return (
@@ -581,7 +601,6 @@ export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
       />
-
       <SlideShell
         active={index === 1}
         index={1}
@@ -625,7 +644,6 @@ export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
           ))}
         </div>
       </SlideShell>
-
       <SlideShell
         active={index === 2}
         index={2}
@@ -633,17 +651,6 @@ export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
       >
-        <img
-          src="/speakers/4/playwright.png"
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 h-full w-[55%] object-cover opacity-30"
-          style={{
-            maskImage: "linear-gradient(to left, black 30%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to left, black 30%, transparent 100%)",
-          }}
-        />
         <div className="relative max-w-[68%]">
           <Prompt cmd="./process" />
           <h2 className="anim mt-3 text-[54px] font-medium leading-[1.15] tracking-[-.02em] [animation-delay:150ms]">
@@ -658,8 +665,15 @@ export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
             Это начало марионеточного театра.
           </div>
         </div>
+        {/* ponytail: image as a visible framed panel, not a faded bg */}
+        <div className="anim absolute right-20 top-1/2 z-10 -translate-y-1/2 border border-[#222] bg-[#0a0a0a] p-2 [animation-delay:300ms]">
+          <img
+            src="/speakers/4/playwright.png"
+            alt="Playwright"
+            className="h-[320px] w-auto object-contain"
+          />
+        </div>
       </SlideShell>
-
       <SlideShell
         active={index === 3}
         index={3}
@@ -667,13 +681,6 @@ export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
       >
-        <img
-          src="/speakers/4/man-tired.png"
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(0,0,0,.92)_0%,rgba(0,0,0,.6)_100%)]" />
         <div className="relative max-w-[68%]">
           <Prompt cmd="./marionette" />
           <h2 className="anim mt-3 text-[54px] font-medium leading-[1.15] tracking-[-.02em] [animation-delay:150ms]">
@@ -694,8 +701,15 @@ export function MikhailDeck({ index, onPrev, onNext }: DeckProps) {
             />
           </div>
         </div>
+        {/* ponytail: image as a visible framed panel, not a full-bg overlay */}
+        <div className="anim absolute right-20 top-1/2 z-10 -translate-y-1/2 border border-[#222] bg-[#0a0a0a] p-2 [animation-delay:300ms]">
+          <img
+            src="/speakers/4/man-tired.png"
+            alt="Выгорание"
+            className="h-[320px] w-auto object-contain"
+          />
+        </div>
       </SlideShell>
-
       <SlideShell
         active={index === 4}
         index={4}

@@ -77,7 +77,7 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
     shortBio:
       "Сделал этот сайт за 5 минут, а с текстовкой возился 1 час. Показывает календарь событий и как всё успеть.",
     photos: ["/speakers/2/speaker-niyaz.png"],
-    slideCount: 3,
+    slideCount: 4,
   },
   anastasia: {
     id: "anastasia",
