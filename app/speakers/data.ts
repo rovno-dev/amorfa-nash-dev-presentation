@@ -85,7 +85,7 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
     shortBio:
       "В 16 лет случайно стал волонтёром, с детства хотел стать блогером, а теперь ещё и рассказывает об этом со сцены.",
     photos: ["/speakers/1/speaker-amir.png"],
-    slideCount: 5,
+    slideCount: 6,
   },
   niyaz: {
     id: "niyaz",
