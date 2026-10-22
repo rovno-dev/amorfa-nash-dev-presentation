@@ -39,14 +39,10 @@ __  __ _____ _   _
           <h2 className="anim mt-2 text-[22px] font-medium leading-[1.15] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px] 2xl:text-[54px]">
             Как я стал волонтёром в 16 лет
           </h2>
-          <p className="anim mt-3 text-sm leading-relaxed text-[#ccc] [animation-delay:200ms] sm:mt-4 sm:text-base md:text-lg lg:mt-4 lg:text-lg xl:mt-4 xl:text-lg 2xl:mt-6 2xl:text-[22px]">
+          <div className="anim mt-4 max-w-[900px] border-l-2 border-[#CCFF00] bg-[rgba(10,10,10,.5)] p-3 text-sm leading-relaxed text-[#ddd] [animation-delay:250ms] sm:mt-6 sm:p-4 sm:text-base lg:mt-6 lg:p-4 lg:text-base 2xl:mt-10 2xl:p-6 2xl:text-xl">
             Я не просыпался с мыслью: «Сегодня я стану волонтёром». Всё
             произошло случайно. Как и большинство великих открытий. Например,
             пенициллин. Или мемы про котов.
-          </p>
-          <div className="anim mt-4 max-w-[900px] border-l-2 border-[#CCFF00] bg-[rgba(10,10,10,.5)] p-3 text-sm leading-relaxed text-[#ddd] [animation-delay:250ms] sm:mt-6 sm:p-4 sm:text-base lg:mt-6 lg:p-4 lg:text-base 2xl:mt-10 2xl:p-6 2xl:text-xl">
-            «С большой силой приходит большая ответственность». Суперсил у меня
-            пока нет, но ответственность уже появилась.
           </div>
         </div>
       </SlideShell>
@@ -92,11 +88,6 @@ __  __ _____ _   _
           <h2 className="anim mt-2 text-[22px] font-medium leading-[1.15] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px] 2xl:text-[54px]">
             Это не «давайте будем полезны друг другу»
           </h2>
-          <p className="anim mt-3 text-sm leading-relaxed text-[#ccc] [animation-delay:200ms] sm:mt-4 sm:text-base md:text-lg lg:mt-4 lg:text-lg xl:mt-4 xl:text-lg 2xl:mt-6 2xl:text-[22px]">
-            «Давайте будем полезны друг другу» звучит как сделка. Просто
-            поздоровайтесь. И не ведите себя так, будто вы пришли брать
-            интервью для Forbes.
-          </p>
           <div className="anim mt-4 max-w-[900px] border-l-2 border-[#CCFF00] bg-[rgba(10,10,10,.5)] p-3 text-sm leading-relaxed text-[#ddd] [animation-delay:250ms] sm:mt-6 sm:p-4 sm:text-base lg:mt-6 lg:p-4 lg:text-base 2xl:mt-10 2xl:p-6 2xl:text-xl">
             «Один обычный разговор может привести вас к новой возможности.
             Поэтому волонтёрство — это не только помощь другим, но и

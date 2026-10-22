@@ -36,10 +36,6 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
           <Stat num="97%" label="посетителей уходят" accent="#FF3B3B" />
           <Stat num="1-3%" label="средняя конверсия" />
         </div>
-        <p className="anim mt-4 max-w-[920px] text-sm leading-relaxed text-[#ccc] [animation-delay:250ms] sm:mt-6 sm:text-base md:text-lg lg:mt-6 lg:text-lg xl:mt-6 xl:text-lg 2xl:mt-10 2xl:text-[22px]">
-          Причины: не поняли ценность · не доверились · перегрузились ·
-          столкнулись с неопределённостью.
-        </p>
       </SlideShell>
       <ErrorSlide
         active={index === 2}

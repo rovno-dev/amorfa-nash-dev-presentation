@@ -1,11 +1,11 @@
 "use client";
+import { Fragment } from "react";
 import { ArrowDown } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { SlideShell } from "../components/slide-shell";
 import { SPEAKERS } from "../data";
 import { SpeakerHero, Prompt, type DeckProps } from "./shared";
 
-// Corner label — top-left (Q1) or top-right (Q2-Q5)
 function QuestionLabel({
   n,
   position,
@@ -25,15 +25,40 @@ function QuestionLabel({
   );
 }
 
-// Transparent PNG anchored bottom-right, behind text.
-function CornerImage({ src, alt }: { src: string; alt: string }) {
+// Transparent PNG anchored to a corner, behind text.
+function CornerImage({
+  src,
+  alt,
+  className,
+  side = "right",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  side?: "left" | "right";
+}) {
   return (
     <img
       src={src}
       alt={alt}
       aria-hidden="true"
-      className="anim pointer-events-none absolute bottom-0 right-0 z-0 max-h-[55%] w-auto max-w-[75%] select-none object-contain object-bottom [animation-delay:200ms] sm:max-h-[65%] md:max-h-[72%] lg:max-h-[78%] xl:max-h-[80%] 2xl:max-h-[84%]"
+      className={cn(
+        className,
+        "anim pointer-events-none absolute bottom-0 z-0 max-h-[55%] w-auto max-w-[75%] select-none object-contain object-bottom [animation-delay:200ms] sm:max-h-[65%] md:max-h-[72%] lg:max-h-[78%] xl:max-h-[80%] 2xl:max-h-[84%]",
+        side === "left" ? "left-0" : "right-0",
+      )}
     />
+  );
+}
+
+// Vercel-style green callout box for image-bearing questions.
+function CalloutBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="anim relative z-10 mt-6 ml-auto max-w-[64%] bg-[#CCFF00] p-4 text-black [animation-delay:150ms] sm:mt-8 sm:p-6 md:max-w-[58%] md:p-7 lg:p-8">
+      <h2 className="text-[15px] font-medium leading-[1.15] tracking-[-.01em] sm:text-[20px] md:text-[26px] lg:text-[32px] xl:text-[38px] 2xl:text-[46px]">
+        {children}
+      </h2>
+    </div>
   );
 }
 
@@ -41,7 +66,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.mikhail.slideCount;
   return (
     <>
-      {/* 0 — Hero (same SpeakerHero as every other speaker) */}
+      {/* 0 — Hero */}
       <SpeakerHero
         id="mikhail"
         active={index === 0}
@@ -51,7 +76,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       />
 
-      {/* 1 — Как оправдать ожидания клиента? */}
+      {/* 1 — Ожидания */}
       <SlideShell
         active={index === 1}
         index={1}
@@ -63,13 +88,9 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         <h2 className="anim mt-2 max-w-[90%] break-words text-balance text-[28px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:max-w-[85%] sm:text-[36px] md:text-[48px] lg:text-[56px] xl:text-[64px] 2xl:text-[80px]">
           Как оправдать ожидания клиента?
         </h2>
-        <p className="anim mt-4 max-w-[700px] text-sm leading-relaxed text-[#888] [animation-delay:250ms] sm:mt-6 sm:text-base md:text-lg 2xl:text-xl">
-          Пять вопросов, которые превращают «сделайте красиво» в понятный
-          проект. И спасают обе стороны от марионеточного театра.
-        </p>
       </SlideShell>
 
-      {/* 2 — «Брат, сделай сайт как у Apple...» */}
+      {/* 2 — «Брат, сделай...» */}
       <SlideShell
         active={index === 2}
         index={2}
@@ -79,7 +100,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
       >
         <div className="relative flex min-h-0 flex-1 flex-col">
           <CornerImage
-            src="/speakers/4/boss-arguing.png"
+            src="/speakers/4/brat.png"
             alt="Клиент и дизайнер"
           />
           <div className="relative z-10">
@@ -91,7 +112,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 3 — Как не быть марионеткой в руках клиента? */}
+      {/* 3 — Марионетка */}
       <SlideShell
         active={index === 3}
         index={3}
@@ -100,7 +121,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <div className="relative flex min-h-0 flex-1 flex-col">
-          <CornerImage src="/speakers/4/man-tired.png" alt="Марионетка" />
+          <CornerImage className="bg-[#B4EE03]" src="/speakers/4/playwright.png" alt="Марионетка" />
           <div className="relative z-10">
             <Prompt cmd="./marionette" />
             <h2 className="anim mt-2 max-w-[85%] break-words text-balance text-[22px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:max-w-[78%] sm:text-[30px] md:text-[38px] lg:text-[46px] xl:text-[54px] 2xl:text-[66px]">
@@ -112,7 +133,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 4 — Q1 · centered, no image */}
+      {/* 4 — Q1 */}
       <SlideShell
         active={index === 4}
         index={4}
@@ -132,7 +153,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 5 — Q2 · image bottom-right, text top-left */}
+      {/* 5 — Q2 · Smith LEFT, callout RIGHT */}
       <SlideShell
         active={index === 5}
         index={5}
@@ -141,17 +162,20 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <div className="relative flex min-h-0 flex-1 flex-col">
-          <QuestionLabel n={2} position="tr" />
-          <CornerImage src="/speakers/4/y-smith.png" alt="Реакция клиента" />
-          <h2 className="anim relative z-10 mt-8 max-w-[82%] text-left text-balance text-[20px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-10 sm:text-[26px] md:text-[32px] lg:text-[38px] xl:text-[44px] 2xl:text-[54px]">
-            Что должен испытать клиент в{" "}
-            <span className="text-[#CCFF00]">первые секунды</span>{" "}
-            взаимодействия с дизайном?
-          </h2>
+          <QuestionLabel n={2} position="tl" />
+          <CornerImage
+            src="/speakers/4/y-smith.png"
+            alt="Реакция клиента"
+            side="left"
+          />
+          <CalloutBox>
+            Что должен испытать клиент в первые секунды взаимодействия с
+            дизайном?
+          </CalloutBox>
         </div>
       </SlideShell>
 
-      {/* 6 — Q3 · centered, no image (Mr. Incredible placeholder noted) */}
+      {/* 6 — Q3 */}
       <SlideShell
         active={index === 6}
         index={6}
@@ -171,7 +195,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 7 — Q4 · centered, no image */}
+      {/* 7 — Q4 */}
       <SlideShell
         active={index === 7}
         index={7}
@@ -191,7 +215,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 8 — Q5 · image bottom-right, text top-left */}
+      {/* 8 — Q5 · bodrov-druzhko LEFT, callout RIGHT */}
       <SlideShell
         active={index === 8}
         index={8}
@@ -200,19 +224,21 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <div className="relative flex min-h-0 flex-1 flex-col">
-          <QuestionLabel n={5} position="tr" />
+          <QuestionLabel n={5} position="tl" />
           <CornerImage
-            src="/speakers/4/bodrov-druzhko.png"
+            src="/speakers/4/boss-arguing.png"
             alt="Стейкхолдеры"
+            side="left"
           />
-          <h2 className="anim relative z-10 mt-8 max-w-[80%] text-left text-balance text-[20px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-10 sm:text-[26px] md:text-[32px] lg:text-[38px] xl:text-[44px] 2xl:text-[54px]">
-            Кто, кроме вас, принимает решение и кто{" "}
-            <span className="text-[#CCFF00]">подписывает бюджет?</span>
-          </h2>
+          <CalloutBox>
+            Кто, кроме вас, принимает решение и кто подписывает бюджет?
+          </CalloutBox>
         </div>
       </SlideShell>
 
-      {/* 9 — Flow */}
+      {/* 9 — Flow · Vercel-style 3-node pipeline */}
+
+      {/* 9 — Flow · vertical monochrome pipeline */}
       <SlideShell
         active={index === 9}
         index={9}
@@ -221,20 +247,56 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       >
         <Prompt cmd="./process" />
-        <h2 className="anim mt-2 break-words text-balance text-[22px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:text-[28px] md:text-[34px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px]">
-          5 вопросов → один документ → один прототип
+        <h2 className="anim mt-2 break-words text-balance text-[22px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:text-[30px] md:text-[36px] lg:text-[42px] xl:text-[48px] 2xl:text-[56px]">
+          <span className="text-white/50">Один процесс — </span>
+          <span className="text-white">ноль переделок</span>
         </h2>
-        <div className="anim mt-6 flex flex-col items-center gap-2 [animation-delay:200ms] sm:mt-8 sm:gap-3 lg:mt-10 2xl:gap-4">
-          <div className="w-full max-w-[420px] border-2 border-[#CCFF00] bg-white px-6 py-2.5 text-center text-sm font-medium text-black sm:px-8 sm:py-3.5 sm:text-base md:text-lg 2xl:text-xl">
-            5 вопросов
-          </div>
-          <ArrowDown size={20} weight="bold" className="text-[#CCFF00]" />
-          <div className="w-full max-w-[420px] border-2 border-[#CCFF00] bg-white px-6 py-2.5 text-center text-sm font-medium text-black sm:px-8 sm:py-3.5 sm:text-base md:text-lg 2xl:text-xl">
-            Один документ
-          </div>
-          <ArrowDown size={20} weight="bold" className="text-[#CCFF00]" />
-          <div className="w-full max-w-[420px] border-2 border-[#CCFF00] bg-white px-6 py-2.5 text-center text-sm font-medium text-black sm:px-8 sm:py-3.5 sm:text-base md:text-lg 2xl:text-xl">
-            Один прототип
+
+        <div className="anim mt-6 flex min-h-0 flex-1 items-center justify-center [animation-delay:200ms] sm:mt-8">
+          <div className="flex w-full max-w-2xl flex-col items-stretch">
+            {[
+              { num: "01", en: "", ru: "5 вопросов" },
+              { num: "02", en: "", ru: "Один документ" },
+              { num: "03", en: "", ru: "Один прототип" },
+            ].map((step, i, arr) => {
+              const isLast = i === arr.length - 1;
+              return (
+                <Fragment key={step.num}>
+                  <div
+                    className={cn(
+                      "relative flex items-center gap-4 rounded-2xl border px-5 py-5 transition-colors sm:gap-6 sm:px-8 sm:py-7",
+                      isLast
+                        ? "border-white/[0.2] bg-white/[0.05]"
+                        : "border-white/[0.08] bg-white/[0.02]",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border bg-black font-mono text-base font-medium sm:h-16 sm:w-16 sm:text-xl",
+                        isLast
+                          ? "border-white/[0.2] text-white"
+                          : "border-white/[0.1] text-white/60",
+                      )}
+                    >
+                      {step.num}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-mono text-[10px] uppercase tracking-[.2em] text-white/40 sm:text-xs">
+                        {step.en}
+                      </div>
+                      <div className="mt-1 text-xl font-medium leading-tight text-white sm:text-2xl md:text-3xl">
+                        {step.ru}
+                      </div>
+                    </div>
+                  </div>
+                  {!isLast && (
+                    <div className="flex justify-center py-2 sm:py-2.5">
+                      <ArrowDown size={18} weight="bold" className="text-white/30" />
+                    </div>
+                  )}
+                </Fragment>
+              );
+            })}
           </div>
         </div>
       </SlideShell>
@@ -257,8 +319,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
             />
           </div>
           <p className="anim mt-3 font-mono text-xs text-[#888] [animation-delay:250ms] sm:mt-5 sm:text-sm md:text-base">
-            <span className="text-[#CCFF00]">//</span> наведи камеру — попадёшь
-            в бриф
+            <span className="text-[#CCFF00]">//</span> наш канал в MAX
           </p>
         </div>
       </SlideShell>

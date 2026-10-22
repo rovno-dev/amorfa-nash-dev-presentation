@@ -142,8 +142,7 @@ export function NiyazDeck({ index, onPrev, onNext }: DeckProps) {
               />
             </div>
             <p className="max-w-[520px] font-mono text-xs leading-relaxed text-[#888] sm:text-sm md:text-base">
-              <span className="text-[#CCFF00]">//</span> Навёл камеру — попал
-              в календарь. Или открой одной кнопкой, если читаешь с телефона.
+              unidoka.com/events
             </p>
             <a
               href={EVENTS_URL}
@@ -154,9 +153,6 @@ export function NiyazDeck({ index, onPrev, onNext }: DeckProps) {
               Открыть на этом устройстве
               <ArrowRight size={14} weight="bold" />
             </a>
-            <div className="font-mono text-[10px] text-[#555] sm:text-xs">
-              unidoka.com/events
-            </div>
           </div>
         </div>
       </SlideShell>
