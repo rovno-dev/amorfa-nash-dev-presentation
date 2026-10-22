@@ -311,6 +311,7 @@ animation: slideUp .7s cubic-bezier(.16,1,.3,1) forwards;
           {deckId === "amir" && <AmirDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "niyaz" && <NiyazDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "break" && <BreakDeck index={slideIndex} total={total} {...nav} />}
+          {deckId === "break" && <BreakDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "anastasia" && <AnastasiaDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "mikhail" && <MikDanDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "singers" && <SingersDeck index={slideIndex} total={total} {...nav} />}

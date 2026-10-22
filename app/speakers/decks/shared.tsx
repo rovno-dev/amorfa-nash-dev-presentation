@@ -231,7 +231,7 @@ export function ErrorSlide({
   );
 }
 
-// "Спасибо!" slide — variant "simple" (bare thanks), "final" (TG QR + @handle).
+// "Спасибо!" slide - variant "simple" (bare thanks), "final" (TG QR + @handle).
 export function ThanksSlide({
   active,
   index,

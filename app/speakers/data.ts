@@ -101,7 +101,7 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
     id: "break",
     num: "04",
     name: "Перерыв",
-    subtitle: "// нетворкинг, нетворкинг, нетворкинг!",
+    subtitle: "// 10 минут · кофе и нетворкинг",
     shortBio: "",
     photos: [],
     slideCount: 1,

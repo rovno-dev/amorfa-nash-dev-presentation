@@ -31,7 +31,7 @@ export function ContestDeck({ index, onPrev, onNext }: Props) {
             {[
               ["prize:", "Яндекс Станция Лайт"],
               ["value:", "6 700 ₽"],
-              ["timing:", "14:50 — в зале"],
+              ["timing:", "14:50 - в зале"],
               ["how_to_win:", "лучший вопрос"],
             ].map(([k, v]) => (
               <div key={k}>
@@ -47,7 +47,7 @@ export function ContestDeck({ index, onPrev, onNext }: Props) {
             {[
               "задай содержательный вопрос спикеру",
               "спикер сам выбирает лучший после доклада",
-              "вручение — в конце мероприятия",
+              "вручение - в конце мероприятия",
             ].map((t) => (
               <li key={t} className="flex gap-2 sm:gap-3">
                 <span className="text-[#CCFF00]">→</span>

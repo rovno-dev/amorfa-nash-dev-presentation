@@ -73,7 +73,8 @@ export function BreakDeck({ index, onPrev, onNext }: DeckProps) {
           Перерыв<span className="text-[#CCFF00]">!</span>
         </h2>
         <p className="anim font-mono text-xs text-[#888] [animation-delay:200ms] sm:text-sm md:text-base">
-          <span className="text-[#CCFF00]">//</span> нетворкинг, нетворкинг, нетворкинг!
+          <span className="text-[#CCFF00]">//</span> 10 минут · кофе и
+          нетворкинг
         </p>
         <div className="anim mt-4 [animation-delay:300ms] sm:mt-6 lg:mt-8">
           <AsciiClock />

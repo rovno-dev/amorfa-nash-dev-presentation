@@ -20,7 +20,7 @@ export function SingersDeck({ index, onPrev, onNext }: DeckProps) {
         className="relative h-full w-full overflow-hidden bg-black"
         style={{ position: "absolute", inset: 0 }}
       >
-        {/* Animated gradient backdrop — visible if video fails to load */}
+        {/* Animated gradient backdrop - visible if video fails to load */}
         <div
           aria-hidden
           className="absolute inset-0 z-0"
