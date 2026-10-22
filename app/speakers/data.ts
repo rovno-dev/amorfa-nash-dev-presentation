@@ -77,13 +77,13 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
     shortBio:
       "Сделал этот сайт за 5 минут, а с текстовкой возился 1 час. Показывает календарь событий и как всё успеть.",
     photos: ["/speakers/2/speaker-niyaz.png"],
-    slideCount: 4,
+    slideCount: 5,
   },
   anastasia: {
     id: "anastasia",
     num: "03",
     name: "Анастасия Пугачёва",
-    subtitle: "// CEO Визионикс // UX & Когнитивистика",
+    subtitle: "// CEO Визионикс // 6 лет UX/UI",
     shortBio:
       "6 лет в веб-дизайне. Исследует, как когнитивная психология и поведенческие паттерны влияют на конверсию сайтов.",
     photos: ["/speakers/3/speaker-anastasia.png"],
@@ -100,7 +100,7 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
       "/speakers/4/speaker-mikhail.png",
       "/speakers/4/speaker-danil.png",
     ],
-    slideCount: 5,
+    slideCount: 11,
   },
   contest: {
     id: "contest",

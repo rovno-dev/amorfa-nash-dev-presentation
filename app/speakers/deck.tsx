@@ -10,7 +10,7 @@ import {
   AmirDeck,
   NiyazDeck,
   AnastasiaDeck,
-  MikhailDeck,
+  MikDanDeck,
 } from "./decks";
 import { Marquee } from "./components/marquee";
 
@@ -308,7 +308,7 @@ animation: slideUp .7s cubic-bezier(.16,1,.3,1) forwards;
           {deckId === "amir" && <AmirDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "niyaz" && <NiyazDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "anastasia" && <AnastasiaDeck index={slideIndex} total={total} {...nav} />}
-          {deckId === "mikhail" && <MikhailDeck index={slideIndex} total={total} {...nav} />}
+          {deckId === "mikhail" && <MikDanDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "contest" && <ContestDeck index={slideIndex} {...nav} />}
         </div>
         <Marquee />

@@ -1,12 +1,18 @@
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
+
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://rovno.dev").replace(
+  /\/$/,
+  "",
+);
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/', '/admin/', '/dashboard/'],
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/", "/admin/", "/dashboard/"],
     },
-    sitemap: 'https://acme.com/sitemap.xml',
-  }
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
+  };
 }
