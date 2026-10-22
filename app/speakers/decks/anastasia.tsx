@@ -7,6 +7,7 @@ import {
   Prompt,
   ErrorSlide,
   type DeckProps,
+  ThanksSlide,
 } from "./shared";
 
 export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
@@ -78,7 +79,7 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
         onPrev={onPrev}
         onNext={onNext}
         title="Когнитивная нагрузка"
-        desc="Когда интерфейс требует слишком много операций ввода, сравнения или запоминания, мозг переключается в режим энергосбережения — и пользователь уходит."
+        desc="Когда интерфейс требует слишком много операций ввода, сравнения или запоминания, мозг переключается в режим энергосбережения - и пользователь уходит."
         bad="Формы с 10+ полями. Меню из 7+ пунктов. Сложная фильтрация."
         good="3–4 поля на экран. Пошаговая структура. Группировка и визуальная иерархия."
       />
@@ -90,7 +91,7 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
         title="Социальное доказательство"
         desc="В условиях неопределённости человек ориентируется на поведение других."
-        bad="«Нам доверяют» без имён. Отзывы без фото и должности. «Более 1000 клиентов» — кто именно?"
+        bad="«Нам доверяют» без имён. Отзывы без фото и должности. «Более 1000 клиентов» - кто именно?"
         good="Логотипы узнаваемых компаний. Отзывы с результатом. Кейс «было → стало → за какой срок»."
         badLabel="Не работает"
       />
@@ -135,6 +136,7 @@ export function AnastasiaDeck({ index, onPrev, onNext }: DeckProps) {
           </div>
         </div>
       </SlideShell>
+      <ThanksSlide active={index === 8} index={8} total={total} onPrev={onPrev} onNext={onNext} />
     </>
   );
 }

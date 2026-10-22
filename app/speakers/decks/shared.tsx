@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { ArrowRight } from "@phosphor-icons/react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ScrambleText } from "../components/scramble-text";
@@ -11,6 +12,22 @@ export interface DeckProps {
   index: number;
   onPrev: () => void;
   onNext: () => void;
+}
+
+// Small QR + URL anchored top-right of the slide. Visible md+.
+export function PresentationCorner() {
+  return (
+    <div className="pointer-events-none absolute right-4 top-4 z-20 hidden flex-col items-end gap-2 md:right-6 md:top-6 md:flex lg:right-8 lg:top-8">
+      <img
+        src="/presentation-qr.svg"
+        alt="QR: presentation"
+        className="h-24 w-24 border border-white/20 bg-white p-1 md:h-32 md:w-32 lg:h-40 lg:w-40 2xl:h-48 2xl:w-48"
+      />
+      <span className="font-mono text-[11px] tracking-[.15em] text-white/55 md:text-sm lg:text-base 2xl:text-lg">
+        nd-2026.slides.rovno.dev
+      </span>
+    </div>
+  );
 }
 
 export function SpeakerHero({
@@ -31,6 +48,7 @@ export function SpeakerHero({
       onPrev={onPrev}
       onNext={onNext}
     >
+      <PresentationCorner />
       {isDuo ? (
         <div className="flex flex-col items-center gap-4 sm:gap-6 lg:gap-8">
           <div className="anim flex shrink-0 gap-2 [animation-delay:100ms] sm:gap-4 lg:gap-5">
@@ -208,6 +226,77 @@ export function ErrorSlide({
       <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2 lg:mt-6 lg:gap-4 2xl:mt-8 2xl:gap-6">
         <TerminalCard title={badLabel} body={bad} delay={250} danger />
         <TerminalCard title="Хорошо" body={good} delay={300} success />
+      </div>
+    </SlideShell>
+  );
+}
+
+// "Спасибо!" slide — variant "simple" (bare thanks), "final" (TG QR + @handle).
+export function ThanksSlide({
+  active,
+  index,
+  total,
+  onPrev,
+  onNext,
+  variant = "simple",
+}: {
+  active: boolean;
+  index: number;
+  total: number;
+  onPrev: () => void;
+  onNext: () => void;
+  variant?: "simple" | "final";
+}) {
+  if (variant === "simple") {
+    return (
+      <SlideShell
+        active={active}
+        index={index}
+        total={total}
+        onPrev={onPrev}
+        onNext={onNext}
+      >
+        <div className="flex flex-col items-center justify-center text-center">
+          <Prompt cmd="./thanks" />
+          <h2 className="anim mt-3 text-[48px] font-medium leading-[1.05] tracking-[-.03em] [animation-delay:150ms] sm:text-[72px] md:text-[96px] lg:text-[120px] xl:text-[140px] 2xl:text-[180px]">
+            Спасибо<span className="text-[#CCFF00]">!</span>
+          </h2>
+        </div>
+      </SlideShell>
+    );
+  }
+  return (
+    <SlideShell
+      active={active}
+      index={index}
+      total={total}
+      onPrev={onPrev}
+      onNext={onNext}
+    >
+      <div className="flex flex-col items-center text-center">
+        <Prompt cmd="./thanks --final" />
+        <h2 className="anim mt-2 text-[36px] font-medium leading-[1.05] tracking-[-.03em] [animation-delay:150ms] sm:mt-3 sm:text-[56px] md:text-[72px] lg:text-[88px] xl:text-[100px] 2xl:text-[120px]">
+          Спасибо<span className="text-[#CCFF00]">!</span>
+        </h2>
+        <p className="anim mt-3 max-w-[600px] text-sm leading-relaxed text-[#aaa] [animation-delay:200ms] sm:mt-4 sm:text-base md:text-lg lg:text-xl">
+          Результаты, реплеи и всё остальное - в Telegram-канале Rovno.dev. Как и ссылка на обновлённый сайт
+        </p>
+        <div className="anim mt-5 border border-[#222] bg-white p-3 [animation-delay:250ms] sm:mt-6 sm:p-4">
+          <img
+            src="/rd-tg-qr.svg"
+            alt="QR: @rovno_dev"
+            className="h-[180px] w-[180px] object-contain sm:h-[220px] sm:w-[220px] md:h-[240px] md:w-[240px] lg:h-[260px] lg:w-[260px] 2xl:h-[300px] 2xl:w-[300px]"
+          />
+        </div>
+        <a
+          href="https://t.me/rovno_dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="anim mt-4 inline-flex items-center gap-2 border border-[#CCFF00] bg-[#CCFF00] px-5 py-3 font-mono text-xs font-medium uppercase tracking-[.14em] text-black transition-all [animation-delay:300ms] hover:bg-transparent hover:text-[#CCFF00] sm:mt-5 sm:px-6 sm:py-3.5 sm:text-sm"
+        >
+          @rovno_dev
+          <ArrowRight size={14} weight="bold" />
+        </a>
       </div>
     </SlideShell>
   );

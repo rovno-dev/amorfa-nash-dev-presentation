@@ -31,7 +31,7 @@ export function ContestDeck({ index, onPrev, onNext }: Props) {
             {[
               ["prize:", "Яндекс Станция Лайт"],
               ["value:", "6 700 ₽"],
-              ["timing:", "прямо сейчас!"],
+              ["timing:", "14:50 — в зале"],
               ["how_to_win:", "лучший вопрос"],
             ].map(([k, v]) => (
               <div key={k}>

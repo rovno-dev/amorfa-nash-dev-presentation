@@ -18,7 +18,7 @@ const OG_IMAGE = {
   url: OG_IMAGE_PATH,
   width: 1200,
   height: 630,
-  alt: "НАШ.DEV — IT и бизнес-конференция для студентов · 23 октября 2026 · МЦК КИТС",
+  alt: "НАШ.DEV - IT и бизнес-конференция для студентов · 23 октября 2026 · МЦК КИТС",
 };
 
 const DESCRIPTION_BY_DECK: Record<DeckId, string> = {
@@ -26,18 +26,18 @@ const DESCRIPTION_BY_DECK: Record<DeckId, string> = {
     "IT и бизнес-конференция для студентов. 23 октября 2026 · МЦК КИТС, Казань. Бесплатно, 16+.",
   amir:
     SPEAKERS.amir.shortBio ||
-    "Амир Бадрутдинов — волонтёрство и медиа. НАШ.DEV 2026.",
+    "Амир Бадрутдинов - волонтёрство и медиа. НАШ.DEV 2026.",
   niyaz:
     SPEAKERS.niyaz.shortBio ||
-    "Нияз Гимадиев — CTO Rovno.dev, Founder Unidoka. НАШ.DEV 2026.",
+    "Нияз Гимадиев - CTO Rovno.dev, Founder Unidoka. НАШ.DEV 2026.",
   anastasia:
     SPEAKERS.anastasia.shortBio ||
-    "Анастасия Пугачёва — UX и когнитивистика. НАШ.DEV 2026.",
+    "Анастасия Пугачёва - UX и когнитивистика. НАШ.DEV 2026.",
   mikhail:
     SPEAKERS.mikhail.shortBio ||
-    "Михаил и Данил — CMO и арт-директор Rovno.dev. НАШ.DEV 2026.",
+    "Михаил и Данил - CMO и арт-директор Rovno.dev. НАШ.DEV 2026.",
   contest:
-    "Розыгрыш Яндекс Станции Лайт на конференции НАШ.DEV — за лучший вопрос спикеру.",
+    "Розыгрыш Яндекс Станции Лайт на конференции НАШ.DEV - за лучший вопрос спикеру.",
 };
 
 const KEYWORDS_BASE = [
@@ -86,8 +86,8 @@ export async function generateMetadata({
 
   const title =
     deckId === "event"
-      ? "НАШ.DEV — Конференция для создателей будущего"
-      : `${s.name} — НАШ.DEV 2026`;
+      ? "НАШ.DEV - Конференция для создателей будущего"
+      : `${s.name} - НАШ.DEV 2026`;
   const description = DESCRIPTION_BY_DECK[deckId];
 
   return {
@@ -144,48 +144,48 @@ export default async function Page({
   const jsonLd =
     deckId === "event" || deckId === "contest"
       ? {
-          "@context": "https://schema.org",
-          "@type": "Event",
-          name: "НАШ.DEV 2026",
-          startDate: "2026-10-23",
-          eventStatus: "https://schema.org/EventScheduled",
-          eventAttendanceMode:
-            "https://schema.org/OfflineEventAttendanceMode",
-          location: EVENT_LOCATION,
-          image: [`${SITE_URL}${OG_IMAGE_PATH}`],
-          description: DESCRIPTION_BY_DECK.event,
+        "@context": "https://schema.org",
+        "@type": "Event",
+        name: "НАШ.DEV 2026",
+        startDate: "2026-10-23",
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode:
+          "https://schema.org/OfflineEventAttendanceMode",
+        location: EVENT_LOCATION,
+        image: [`${SITE_URL}${OG_IMAGE_PATH}`],
+        description: DESCRIPTION_BY_DECK.event,
+        url: canonical,
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "RUB",
+          availability: "https://schema.org/InStock",
           url: canonical,
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "RUB",
-            availability: "https://schema.org/InStock",
-            url: canonical,
-          },
-          organizer: {
-            "@type": "Organization",
-            name: "Rovno.dev",
-            url: "https://rovno.dev",
-          },
-        }
+        },
+        organizer: {
+          "@type": "Organization",
+          name: "Rovno.dev",
+          url: "https://rovno.dev",
+        },
+      }
       : {
-          "@context": "https://schema.org",
-          "@type": "Person",
-          name: s.name,
-          jobTitle: s.subtitle
-            .replace(/^\/\/\s*/, "")
-            .replace(/\s*\/\/\s*/g, " · "),
-          description: s.shortBio || undefined,
-          image: s.photos.map((p) => `${SITE_URL}${p}`),
-          url: canonical,
-          mainEntityOfPage: canonical,
-        };
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: s.name,
+        jobTitle: s.subtitle
+          .replace(/^\/\/\s*/, "")
+          .replace(/\s*\/\/\s*/g, " · "),
+        description: s.shortBio || undefined,
+        image: s.photos.map((p) => `${SITE_URL}${p}`),
+        url: canonical,
+        mainEntityOfPage: canonical,
+      };
 
   return (
     <>
       <script
         type="application/ld+json"
-        // ponytail: static, trusted data — no XSS surface.
+        // ponytail: static, trusted data - no XSS surface.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <SpeakersDeck deckId={deckId} />

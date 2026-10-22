@@ -11,6 +11,7 @@ interface Props {
   children: ReactNode;
   onPrev: () => void;
   onNext: () => void;
+  bleed?: boolean;
 }
 
 export function SlideShell({
@@ -20,6 +21,7 @@ export function SlideShell({
   children,
   onPrev,
   onNext,
+  bleed = false,
 }: Props) {
   return (
     <div
@@ -31,7 +33,10 @@ export function SlideShell({
     >
       <div
         className={cn(
-          "slide-content flex h-full flex-col justify-center overflow-y-auto px-4 pb-24 pt-20 sm:px-6 sm:pt-20 md:px-8 lg:px-12 xl:px-12 2xl:px-20",
+          "slide-content flex h-full flex-col",
+          !bleed &&
+            "justify-center overflow-y-auto px-4 pb-24 pt-20 sm:px-6 sm:pt-20 md:px-8 lg:px-12 xl:px-12 2xl:px-20",
+          bleed && "overflow-hidden",
           active && "active",
         )}
       >

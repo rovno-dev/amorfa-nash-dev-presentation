@@ -9,8 +9,11 @@ import { ContestDeck } from "./contest-deck";
 import {
   AmirDeck,
   NiyazDeck,
+  BreakDeck,
   AnastasiaDeck,
   MikDanDeck,
+  SingersDeck,
+  ThanksDeck,
 } from "./decks";
 import { Marquee } from "./components/marquee";
 
@@ -148,7 +151,7 @@ animation: slideUp .7s cubic-bezier(.16,1,.3,1) forwards;
         ≡
       </button>
 
-      {/* Desktop sidebar — only xl+ */}
+      {/* Desktop sidebar - only xl+ */}
       <aside
         className={cn(
           "relative z-20 hidden shrink-0 flex-col border-r border-[#222] bg-black transition-[width] duration-500 ease-[cubic-bezier(.16,1,.3,1)] xl:flex",
@@ -231,7 +234,7 @@ animation: slideUp .7s cubic-bezier(.16,1,.3,1) forwards;
         </div>
       </aside>
 
-      {/* Drawer — for all viewports below xl */}
+      {/* Drawer - for all viewports below xl */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 xl:hidden">
           <div
@@ -307,8 +310,11 @@ animation: slideUp .7s cubic-bezier(.16,1,.3,1) forwards;
           {deckId === "event" && <EventDeck index={slideIndex} {...nav} />}
           {deckId === "amir" && <AmirDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "niyaz" && <NiyazDeck index={slideIndex} total={total} {...nav} />}
+          {deckId === "break" && <BreakDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "anastasia" && <AnastasiaDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "mikhail" && <MikDanDeck index={slideIndex} total={total} {...nav} />}
+          {deckId === "singers" && <SingersDeck index={slideIndex} total={total} {...nav} />}
+          {deckId === "thanks" && <ThanksDeck index={slideIndex} total={total} {...nav} />}
           {deckId === "contest" && <ContestDeck index={slideIndex} {...nav} />}
         </div>
         <Marquee />

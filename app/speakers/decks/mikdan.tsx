@@ -4,7 +4,7 @@ import { ArrowDown } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { SlideShell } from "../components/slide-shell";
 import { SPEAKERS } from "../data";
-import { SpeakerHero, Prompt, type DeckProps } from "./shared";
+import { SpeakerHero, Prompt, ThanksSlide, type DeckProps } from "./shared";
 
 function QuestionLabel({
   n,
@@ -66,7 +66,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.mikhail.slideCount;
   return (
     <>
-      {/* 0 — Hero */}
+      {/* 0 - Hero */}
       <SpeakerHero
         id="mikhail"
         active={index === 0}
@@ -76,7 +76,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         onNext={onNext}
       />
 
-      {/* 1 — Ожидания */}
+      {/* 1 - Ожидания */}
       <SlideShell
         active={index === 1}
         index={1}
@@ -90,7 +90,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </h2>
       </SlideShell>
 
-      {/* 2 — «Брат, сделай...» */}
+      {/* 2 - «Брат, сделай...» */}
       <SlideShell
         active={index === 2}
         index={2}
@@ -112,7 +112,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 3 — Марионетка */}
+      {/* 3 - Марионетка */}
       <SlideShell
         active={index === 3}
         index={3}
@@ -133,7 +133,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 4 — Q1 */}
+      {/* 4 - Q1 */}
       <SlideShell
         active={index === 4}
         index={4}
@@ -153,7 +153,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 5 — Q2 · Smith LEFT, callout RIGHT */}
+      {/* 5 - Q2 · Smith LEFT, callout RIGHT */}
       <SlideShell
         active={index === 5}
         index={5}
@@ -175,7 +175,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 6 — Q3 */}
+      {/* 6 - Q3 */}
       <SlideShell
         active={index === 6}
         index={6}
@@ -195,7 +195,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 7 — Q4 */}
+      {/* 7 - Q4 */}
       <SlideShell
         active={index === 7}
         index={7}
@@ -215,7 +215,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 8 — Q5 · bodrov-druzhko LEFT, callout RIGHT */}
+      {/* 8 - Q5 · bodrov-druzhko LEFT, callout RIGHT */}
       <SlideShell
         active={index === 8}
         index={8}
@@ -236,9 +236,9 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 9 — Flow · Vercel-style 3-node pipeline */}
+      {/* 9 - Flow · Vercel-style 3-node pipeline */}
 
-      {/* 9 — Flow · vertical monochrome pipeline */}
+      {/* 9 - Flow · vertical monochrome pipeline */}
       <SlideShell
         active={index === 9}
         index={9}
@@ -248,7 +248,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
       >
         <Prompt cmd="./process" />
         <h2 className="anim mt-2 break-words text-balance text-[22px] font-medium leading-[1.1] tracking-[-.02em] [animation-delay:150ms] sm:mt-3 sm:text-[30px] md:text-[36px] lg:text-[42px] xl:text-[48px] 2xl:text-[56px]">
-          <span className="text-white/50">Один процесс — </span>
+          <span className="text-white/50">Один процесс - </span>
           <span className="text-white">ноль переделок</span>
         </h2>
 
@@ -301,7 +301,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
         </div>
       </SlideShell>
 
-      {/* 10 — QR */}
+      {/* 10 - QR */}
       <SlideShell
         active={index === 10}
         index={10}
@@ -323,6 +323,7 @@ export function MikDanDeck({ index, onPrev, onNext }: DeckProps) {
           </p>
         </div>
       </SlideShell>
+      <ThanksSlide active={index === 11} index={11} total={total} onPrev={onPrev} onNext={onNext} />
     </>
   );
 }

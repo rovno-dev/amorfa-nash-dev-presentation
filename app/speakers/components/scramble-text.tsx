@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-const CHARS = "!<>-_\\/[]{}—=+*^?#________";
+const CHARS = "!<>-_\\/[]{}-=+*^?#________";
 
 interface Props {
   text: string;

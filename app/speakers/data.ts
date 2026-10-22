@@ -1,27 +1,36 @@
 export type DeckId =
   | "event"
+  | "singers"
   | "amir"
   | "niyaz"
+  | "break"
   | "anastasia"
   | "mikhail"
-  | "contest";
+  | "contest"
+  | "thanks";
 
 export const DECK_ORDER: DeckId[] = [
   "event",
+  "singers",
   "amir",
   "niyaz",
+  "break",
   "anastasia",
   "mikhail",
   "contest",
+  "thanks",
 ];
 
 export const SPEAKER_SLUGS: Record<DeckId, string> = {
   event: "",
+  singers: "singers",
   amir: "amir",
   niyaz: "niyazgim",
+  break: "break",
   anastasia: "anastasia",
   mikhail: "rovno",
   contest: "contest",
+  thanks: "thanks",
 };
 
 export function slugForDeck(id: DeckId): string {
@@ -59,39 +68,57 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
     photos: [],
     slideCount: 1,
   },
+  singers: {
+    id: "singers",
+    num: "01",
+    name: "Сцена",
+    subtitle: "// облака · видео-фон",
+    shortBio: "",
+    photos: [],
+    slideCount: 1,
+  },
   amir: {
     id: "amir",
-    num: "01",
+    num: "02",
     name: "Амир Бадрутдинов",
     subtitle: "// Самый молодой спикер // Волонтёрство & Медиа",
     shortBio:
       "В 16 лет случайно стал волонтёром, с детства хотел стать блогером, а теперь ещё и рассказывает об этом со сцены.",
     photos: ["/speakers/1/speaker-amir.png"],
-    slideCount: 4,
+    slideCount: 5,
   },
   niyaz: {
     id: "niyaz",
-    num: "02",
+    num: "03",
     name: "Нияз Гимадиев",
     subtitle: "// CTO Rovno.dev // Founder Unidoka",
     shortBio:
       "Сделал этот сайт за 5 минут, а с текстовкой возился 1 час. Показывает календарь событий и как всё успеть.",
     photos: ["/speakers/2/speaker-niyaz.png"],
-    slideCount: 5,
+    slideCount: 9,
+  },
+  break: {
+    id: "break",
+    num: "04",
+    name: "Перерыв",
+    subtitle: "// нетворкинг, нетворкинг, нетворкинг!",
+    shortBio: "",
+    photos: [],
+    slideCount: 1,
   },
   anastasia: {
     id: "anastasia",
-    num: "03",
+    num: "05",
     name: "Анастасия Пугачёва",
-    subtitle: "// CEO Визионикс // 6 лет UX/UI",
+    subtitle: "// CEO Визионикс // UX & Когнитивистика",
     shortBio:
       "6 лет в веб-дизайне. Исследует, как когнитивная психология и поведенческие паттерны влияют на конверсию сайтов.",
     photos: ["/speakers/3/speaker-anastasia.png"],
-    slideCount: 8,
+    slideCount: 9,
   },
   mikhail: {
     id: "mikhail",
-    num: "04",
+    num: "06",
     name: "Михаил и Данил",
     subtitle: "// CMO & Арт-директор Rovno.dev",
     shortBio:
@@ -100,13 +127,22 @@ export const SPEAKERS: Record<DeckId, Speaker> = {
       "/speakers/4/speaker-mikhail.png",
       "/speakers/4/speaker-danil.png",
     ],
-    slideCount: 11,
+    slideCount: 12,
   },
   contest: {
     id: "contest",
-    num: "05",
+    num: "07",
     name: "Розыгрыш",
     subtitle: "// Яндекс Станция Лайт",
+    shortBio: "",
+    photos: [],
+    slideCount: 1,
+  },
+  thanks: {
+    id: "thanks",
+    num: "08",
+    name: "Спасибо",
+    subtitle: "// результаты и реплеи в Telegram",
     shortBio: "",
     photos: [],
     slideCount: 1,

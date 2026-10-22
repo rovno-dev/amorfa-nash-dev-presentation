@@ -22,13 +22,13 @@ const OG_IMAGE = {
   // ponytail: confirm actual dims of public/nash-dev-cover.webp; 1200×630 is the OG standard.
   width: 1200,
   height: 630,
-  alt: "НАШ.DEV — IT и бизнес-конференция для студентов · 23 октября 2026 · МЦК КИТС",
+  alt: "НАШ.DEV - IT и бизнес-конференция для студентов · 23 октября 2026 · МЦК КИТС",
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "НАШ.DEV 2026 — Конференция для создателей будущего",
+    default: "НАШ.DEV 2026 - Конференция для создателей будущего",
     template: "%s · НАШ.DEV",
   },
   description:

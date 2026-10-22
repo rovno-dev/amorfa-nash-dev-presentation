@@ -1,7 +1,7 @@
 "use client";
 import { SlideShell } from "../components/slide-shell";
 import { SPEAKERS } from "../data";
-import { SpeakerHero, TerminalCard, Prompt, type DeckProps } from "./shared";
+import { SpeakerHero, TerminalCard, Prompt, ThanksSlide, type DeckProps } from "./shared";
 
 export function AmirDeck({ index, onPrev, onNext }: DeckProps) {
   const total = SPEAKERS.amir.slideCount;
@@ -63,9 +63,9 @@ __  __ _____ _   _
           даже «да».
         </p>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2 lg:mt-6 lg:gap-4 2xl:mt-10 2xl:gap-6">
-          <TerminalCard title="Спорт" body="«Ак Барс», «Рубин», марафон «Ночная Казань». Если любишь спорт и движ — тебе сюда." delay={250} />
-          <TerminalCard title="Международные" body="Саммит АСЕАН, Global Summit, форумы БРИКС. Если тянет к масштабу — пробуй." delay={300} />
-          <TerminalCard title="Молодёжь" body="Лагерь «Сэлэт», образовательные форумы. Если ближе общение — это твоё." delay={350} />
+          <TerminalCard title="Спорт" body="«Ак Барс», «Рубин», марафон «Ночная Казань». Если любишь спорт и движ - тебе сюда." delay={250} />
+          <TerminalCard title="Международные" body="Саммит АСЕАН, Global Summit, форумы БРИКС. Если тянет к масштабу - пробуй." delay={300} />
+          <TerminalCard title="Молодёжь" body="Лагерь «Сэлэт», образовательные форумы. Если ближе общение - это твоё." delay={350} />
           <TerminalCard title="Экология" body="Городские фестивали, экологические акции, благотворительные проекты. Начни с малого." delay={400} />
         </div>
       </SlideShell>
@@ -90,11 +90,12 @@ __  __ _____ _   _
           </h2>
           <div className="anim mt-4 max-w-[900px] border-l-2 border-[#CCFF00] bg-[rgba(10,10,10,.5)] p-3 text-sm leading-relaxed text-[#ddd] [animation-delay:250ms] sm:mt-6 sm:p-4 sm:text-base lg:mt-6 lg:p-4 lg:text-base 2xl:mt-10 2xl:p-6 2xl:text-xl">
             «Один обычный разговор может привести вас к новой возможности.
-            Поэтому волонтёрство — это не только помощь другим, но и
+            Поэтому волонтёрство - это не только помощь другим, но и
             возможность развиваться самому».
           </div>
         </div>
       </SlideShell>
+      <ThanksSlide active={index === 4} index={4} total={total} onPrev={onPrev} onNext={onNext} />
     </>
   );
 }
